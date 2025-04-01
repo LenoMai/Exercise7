@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const storySchema = new Schema({
     title: {type: String, required: [true, 'title is required']},
-    author: {type: Schema.Types.ObjectId, ref: 'User', required: [true, 'author is required']},
+    author: {type: String, required: [true, 'author is required']},
     content: {type: String, required: [true, 'content is required'], 
               minLength: [10, 'the content should have at least 10 characters']},
 },
