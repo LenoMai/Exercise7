@@ -7,6 +7,7 @@ const storyRoutes = require('./routes/storyRoutes');
 const session = require('express-session');
 const flash = require('connect-flash');
 const userRoutes = require('./routes/userRoutes');
+const MongoStore = require('connect-mongo');
 
 //create app
 const app = express();
@@ -32,7 +33,7 @@ app.use(morgan('tiny'));
 app.use(methodOverride('_method'));
 
 app.use(session({
-    secret: 'SECRET KEY',
+    secret: 'SECRET_KEY',
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 60*60*1000},
@@ -47,51 +48,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use({req, res, next})=>{
+app.use((req, res, next) =>{
     console.log(req.session);
     next();
-}
+});
 
 //set up routes
 app.get('/', (req, res)=>{
     res.render('index');
 });
-
-app.get('/new', (req, res, next)=>{
-    res.render('new');
-});
-
-app.post('/', (req, res, next) =>{
-    let user = new User(req.body);
-    user.save()
-    .then(()=> res.redirect('/login'))
-    .catch(err => next(err));
-});
-
-app.post('/login', (req, res) => {
-    let email = req.body.email;
-    let password = req.body.password;
-
-    User.findOne({email: email})
-    .then(user=>{
-        if(user){
-            user.comparePassword(password)
-            .then(result => {
-                if(result){
-                    req.session.user = user._id;
-                    req.flash('success', 'You have successfully logged in');
-                    res.redirect('/profile');
-                } else {
-                    console.log('wrong password');
-                    res.redirect('/login')
-                }
-            })
-        } else {
-            console.log('Wrong email address');
-            res.redirect('/login')
-        }
-    })
-})
 
 app.use('/stories', storyRoutes);
 app.use('/users', userRoutes);

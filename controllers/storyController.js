@@ -11,6 +11,7 @@ exports.new = (req, res)=>{
 
 exports.create = (req, res, next)=>{
     let story = new model(req.body);
+    story.author = req.session.user;
     story.save()
     .then(story=> res.redirect('/stories'))
     .catch(err=>{
@@ -29,7 +30,7 @@ exports.show = (req, res, next)=>{
         err.status = 400;
         return next(err);
     }
-    model.findById(id)
+    model.findById(id).populate('author')
     .then(story=>{
         if(story) {
             return res.render('./story/show', {story});
