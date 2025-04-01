@@ -1,0 +1,22 @@
+<%- include('../partials/header.ejs')%>
+    <% if(messages.success) { %>
+        <div class="success">
+            <%= messages.success %>
+        </div>
+    <% } %>
+    <h3>Welcome, <%= user.firstName %> <%= user.lastName %></h3>
+    <p>Email: <%= user.email %></p>
+    
+    <h4>Your Stories</h4>
+    <% if(stories.length) { %>
+        <% stories.forEach(story => { %>
+            <a href="/stories/<%= story.id %>">
+                <p><%= story.title %></p>
+            </a>
+        <% }); %>
+    <% } else { %>
+        <p>You haven't created any stories yet.</p>
+        <p><a href="/stories/new">Create a new story!</a></p>
+    <% } %>
+</div>
+<%- include('../partials/footer.ejs')%>

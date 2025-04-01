@@ -1,0 +1,25 @@
+<%- include('../partials/header.ejs')%>
+    <% if(messages.error) { %>
+        <div class="error">
+            <%= messages.error %>
+        </div>
+    <% } %>
+    <h3>Sign Up</h3>
+    <form action="/users" method="POST" class="user-form">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <input type="submit" value="Sign Up">
+    </form>
+    <p>Existing Account? <a href="/users/login">Login</a></p>
+</div>
+<%- include('../partials/footer.ejs')%>
